@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Supply Chain Analytics Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="shape shape-orange"></div>
+  <div class="shape shape-teal"></div>
+
+  <main class="dashboard-page">
+    <header class="hero card">
+      <div>
+        <h1>Supply Chain Analytics Dashboard</h1>
+        <p>Monitorização de inventário, rupturas, lead time, desperdício e performance logística.</p>
+      </div>
+      <div class="hero-meta">
+        <div><span>Fonte de dados</span><strong>{{ data_source }}</strong></div>
+        <div><span>Última atualização</span><strong id="updated-at">-</strong></div>
+      </div>
+    </header>
+
+    <section class="filters card">
+      <form id="filters-form">
+        <div class="filter-grid">
+          <label>
+            Data Inicial
+            <input type="date" id="start_date" name="start_date">
+          </label>
+          <label>
+            Data Final
+            <input type="date" id="end_date" name="end_date">
+          </label>
+          <label>
+            Região
+            <select id="region" name="region"></select>
+          </label>
+          <label>
+            Armazém
+            <select id="warehouse" name="warehouse"></select>
+          </label>
+          <label>
+            Fornecedor
+            <select id="supplier" name="supplier"></select>
+          </label>
+          <label>
+            Categoria
+            <select id="category" name="category"></select>
+          </label>
+          <label>
+            Produto
+            <select id="product" name="product"></select>
+          </label>
+        </div>
+        <div class="filter-actions">
+          <button type="submit" class="btn btn-primary">Aplicar filtros</button>
+          <button type="button" id="reset-filters" class="btn btn-light">Limpar</button>
+          <span id="status-line" class="status-line">A carregar dados...</span>
+        </div>
+      </form>
+    </section>
+
+    <section class="kpi-grid">
+      <article class="kpi-card card">
+        <h3>Inventário Total</h3>
+        <p id="kpi-total_inventory">-</p>
+      </article>
+      <article class="kpi-card card">
+        <h3>Lead Time Médio</h3>
+        <p id="kpi-avg_lead_time_days">-</p>
+      </article>
+      <article class="kpi-card card">
+        <h3>Taxa de Ruptura</h3>
+        <p id="kpi-stockout_rate">-</p>
+      </article>
+      <article class="kpi-card card">
+        <h3>Entregas no Prazo</h3>
+        <p id="kpi-on_time_rate">-</p>
+      </article>
+      <article class="kpi-card card">
+        <h3>Desperdício Médio</h3>
+        <p id="kpi-avg_waste_percent">-</p>
+      </article>
+      <article class="kpi-card card">
+        <h3>Precisão da Previsão</h3>
+        <p id="kpi-forecast_accuracy_rate">-</p>
+      </article>
+      <article class="kpi-card card">
+        <h3>Cobertura de Stock</h3>
+        <p id="kpi-avg_stock_coverage">-</p>
+      </article>
+      <article class="kpi-card card">
+        <h3>Custo Total</h3>
+        <p id="kpi-total_cost_eur">-</p>
+      </article>
+    </section>
+
+    <section class="charts-grid">
+      <article class="card chart-card">
+        <h2>Evolução Mensal do Lead Time</h2>
+        <canvas id="chart-monthly-lead-time"></canvas>
+      </article>
+      <article class="card chart-card">
+        <h2>Ruptura por Categoria</h2>
+        <canvas id="chart-stockout-category"></canvas>
+      </article>
+      <article class="card chart-card">
+        <h2>Top 10 Produtos com Ruptura</h2>
+        <canvas id="chart-top-products-stockout"></canvas>
+      </article>
+      <article class="card chart-card">
+        <h2>Entregas no Prazo vs Atrasadas</h2>
+        <canvas id="chart-on-time-split"></canvas>
+      </article>
+      <article class="card chart-card">
+        <h2>Fornecedores com Maior Atraso</h2>
+        <canvas id="chart-supplier-delay"></canvas>
+      </article>
+      <article class="card chart-card">
+        <h2>Previsão vs Procura Real</h2>
+        <canvas id="chart-forecast-vs-actual"></canvas>
+      </article>
+      <article class="card chart-card">
+        <h2>Desperdício Médio por Categoria</h2>
+        <canvas id="chart-waste-category"></canvas>
+      </article>
+      <article class="card chart-card">
+        <h2>Custo Total por Fornecedor</h2>
+        <canvas id="chart-cost-supplier"></canvas>
+      </article>
+    </section>
+
+    <section class="insight-grid">
+      <article class="card">
+        <h2>Insights Automáticos</h2>
+        <ul id="insights-list" class="insights-list"></ul>
+      </article>
+      <article class="card">
+        <h2>Performance por Região</h2>
+        <div class="table-wrapper">
+          <table id="region-performance-table">
+            <thead>
+              <tr>
+                <th>Região</th>
+                <th>Lead Time Médio</th>
+                <th>Atraso Médio</th>
+                <th>Entregas no Prazo</th>
+                <th>Taxa de Ruptura</th>
+                <th>Desperdício Médio</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Tabela Analítica (últimos registos)</h2>
+      <div class="table-wrapper">
+        <table id="orders-table">
+          <thead>
+            <tr>
+              <th>Pedido</th>
+              <th>Data</th>
+              <th>Região</th>
+              <th>Fornecedor</th>
+              <th>Categoria</th>
+              <th>Produto</th>
+              <th>Qtd. Pedida</th>
+              <th>Qtd. Entregue</th>
+              <th>Prev. Procura</th>
+              <th>Procura Real</th>
+              <th>Lead Time</th>
+              <th>Atraso</th>
+              <th>Ruptura</th>
+              <th>Desperdício</th>
+              <th>No Prazo</th>
+              <th>Custo Total</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    window.FILTER_OPTIONS = {{ filter_options | tojson }};
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
