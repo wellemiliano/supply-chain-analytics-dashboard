@@ -341,12 +341,12 @@ function renderRegionPerformance(rows) {
   rows.forEach((row) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${escapeHtml(row.region)}</td>
-      <td>${decimalFormatter.format(row.avg_lead_time_days)} dias</td>
-      <td>${decimalFormatter.format(row.avg_delay_days)} dias</td>
-      <td style="background:${heatColor(row.on_time_rate, true)}">${decimalFormatter.format(row.on_time_rate)}%</td>
-      <td style="background:${heatColor(row.stockout_rate, false)}">${decimalFormatter.format(row.stockout_rate)}%</td>
-      <td>${decimalFormatter.format(row.avg_waste_percent)}%</td>
+      <td data-label="Regiao">${escapeHtml(row.region)}</td>
+      <td data-label="Lead Time Medio">${decimalFormatter.format(row.avg_lead_time_days)} dias</td>
+      <td data-label="Atraso Medio">${decimalFormatter.format(row.avg_delay_days)} dias</td>
+      <td data-label="Entregas no Prazo" style="background:${heatColor(row.on_time_rate, true)}">${decimalFormatter.format(row.on_time_rate)}%</td>
+      <td data-label="Taxa de Ruptura" style="background:${heatColor(row.stockout_rate, false)}">${decimalFormatter.format(row.stockout_rate)}%</td>
+      <td data-label="Desperdicio Medio">${decimalFormatter.format(row.avg_waste_percent)}%</td>
     `;
     tbody.appendChild(tr);
   });
@@ -361,22 +361,22 @@ function renderOrdersTable(rows) {
     const onTimeClass = (row.on_time_delivery || "").toLowerCase() === "sim" ? "badge-ok" : "badge-no";
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${escapeHtml(row.order_id)}</td>
-      <td>${escapeHtml(row.order_date)}</td>
-      <td>${escapeHtml(row.region)}</td>
-      <td>${escapeHtml(row.supplier)}</td>
-      <td>${escapeHtml(row.category)}</td>
-      <td>${escapeHtml(row.product)}</td>
-      <td>${integerFormatter.format(row.quantity_ordered || 0)}</td>
-      <td>${integerFormatter.format(row.quantity_delivered || 0)}</td>
-      <td>${integerFormatter.format(row.demand_forecast || 0)}</td>
-      <td>${integerFormatter.format(row.demand_actual || 0)}</td>
-      <td>${decimalFormatter.format(row.lead_time_actual_days || 0)} dias</td>
-      <td>${decimalFormatter.format(row.lead_time_delay_days || 0)} dias</td>
-      <td><span class="table-cell-badge ${stockoutClass}">${escapeHtml(row.stockout)}</span></td>
-      <td>${decimalFormatter.format(row.waste_percent || 0)}%</td>
-      <td><span class="table-cell-badge ${onTimeClass}">${escapeHtml(row.on_time_delivery)}</span></td>
-      <td>${currencyFormatter.format(row.total_cost_eur || 0)}</td>
+      <td data-label="Pedido">${escapeHtml(row.order_id)}</td>
+      <td data-label="Data">${escapeHtml(row.order_date)}</td>
+      <td data-label="Regiao">${escapeHtml(row.region)}</td>
+      <td data-label="Fornecedor">${escapeHtml(row.supplier)}</td>
+      <td data-label="Categoria">${escapeHtml(row.category)}</td>
+      <td data-label="Produto">${escapeHtml(row.product)}</td>
+      <td data-label="Qtd. Pedida">${integerFormatter.format(row.quantity_ordered || 0)}</td>
+      <td data-label="Qtd. Entregue">${integerFormatter.format(row.quantity_delivered || 0)}</td>
+      <td data-label="Prev. Procura">${integerFormatter.format(row.demand_forecast || 0)}</td>
+      <td data-label="Procura Real">${integerFormatter.format(row.demand_actual || 0)}</td>
+      <td data-label="Lead Time">${decimalFormatter.format(row.lead_time_actual_days || 0)} dias</td>
+      <td data-label="Atraso">${decimalFormatter.format(row.lead_time_delay_days || 0)} dias</td>
+      <td data-label="Ruptura"><span class="table-cell-badge ${stockoutClass}">${escapeHtml(row.stockout)}</span></td>
+      <td data-label="Desperdicio">${decimalFormatter.format(row.waste_percent || 0)}%</td>
+      <td data-label="No Prazo"><span class="table-cell-badge ${onTimeClass}">${escapeHtml(row.on_time_delivery)}</span></td>
+      <td data-label="Custo Total">${currencyFormatter.format(row.total_cost_eur || 0)}</td>
     `;
     tbody.appendChild(tr);
   });

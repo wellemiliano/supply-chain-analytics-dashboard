@@ -310,6 +310,67 @@ thead th {
   }
 }
 
+@media (max-width: 760px) {
+  #orders-table,
+  #region-performance-table {
+    min-width: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  #orders-table thead,
+  #region-performance-table thead {
+    display: none;
+  }
+
+  #orders-table tbody,
+  #region-performance-table tbody {
+    display: grid;
+    gap: 10px;
+  }
+
+  #orders-table tr,
+  #region-performance-table tr {
+    display: block;
+    padding: 8px 10px;
+    border: 1px solid rgba(16, 42, 67, 0.12);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 6px 16px rgba(16, 42, 67, 0.08);
+  }
+
+  #orders-table td,
+  #region-performance-table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: flex-start;
+    white-space: normal;
+    border-bottom: 1px dashed rgba(16, 42, 67, 0.14);
+    padding: 7px 0;
+    font-size: 0.82rem;
+  }
+
+  #orders-table td:last-child,
+  #region-performance-table td:last-child {
+    border-bottom: 0;
+  }
+
+  #orders-table td::before,
+  #region-performance-table td::before {
+    content: attr(data-label);
+    flex: 0 0 44%;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-align: left;
+  }
+
+  #orders-table td > span,
+  #region-performance-table td > span {
+    margin-left: auto;
+  }
+}
+
 @media (max-width: 520px) {
   .hero-meta {
     grid-template-columns: 1fr;
@@ -322,5 +383,15 @@ thead th {
 
   .chart-card canvas {
     height: 210px !important;
+  }
+
+  #orders-table td,
+  #region-performance-table td {
+    font-size: 0.8rem;
+  }
+
+  #orders-table td::before,
+  #region-performance-table td::before {
+    flex-basis: 48%;
   }
 }
