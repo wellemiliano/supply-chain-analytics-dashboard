@@ -64,6 +64,7 @@ async function bootstrapStaticDashboard() {
   setStatus("A carregar dados locais...", true);
   const dataUrl = window.DASHBOARD_DATA_URL || "./data/records.json";
   setText("data-source", dataUrl);
+  applyDefaultVisualMetadata();
 
   try {
     const response = await fetch(dataUrl, { cache: "no-store" });
@@ -74,6 +75,7 @@ async function bootstrapStaticDashboard() {
     const rows = await response.json();
     allRecords = rows.map(prepareRecord).filter((record) => record.order_date_obj);
     filterOptions = buildFilterOptions(allRecords);
+    updateVisualMetadata(allRecords, false);
     initializeFilters(filterOptions);
     loadDashboard();
   } catch (error) {
@@ -226,8 +228,18 @@ function loadDashboard() {
   renderRegionPerformance(payload.charts.region_performance || []);
   renderOrdersTable(payload.table_rows || []);
 
-  setText("updated-at", payload.updated_at);
-  setStatus(`Mostrando ${integerFormatter.format(payload.record_count)} registos.`, false);
+  const defaults = window.DATASET_DEFAULTS || {};
+  if (defaults.updated_at) {
+    setText("updated-at", defaults.updated_at);
+  } else {
+    setText("updated-at", payload.updated_at);
+  }
+  updateVisualMetadata(filtered, true);
+  const periodText = formatRecordPeriod(filtered);
+  setStatus(
+    `Mostrando ${integerFormatter.format(payload.record_count)} registos (${periodText}).`,
+    false
+  );
 }
 
 function computeDashboardPayload(records) {
@@ -783,8 +795,41 @@ function setStatus(message, loading) {
   status.style.color = loading ? "#2563eb" : "#4f6d89";
 }
 
+function applyDefaultVisualMetadata() {
+  const defaults = window.DATASET_DEFAULTS || {};
+  if (defaults.updated_at) {
+    setText("updated-at", defaults.updated_at);
+  }
+  if (Number.isFinite(defaults.record_count)) {
+    setText("record-count-meta", integerFormatter.format(defaults.record_count));
+  }
+  if (defaults.period_start && defaults.period_end) {
+    setText("period-meta", `${defaults.period_start} a ${defaults.period_end}`);
+  }
+}
+
+function updateVisualMetadata(records, keepExistingUpdatedAt) {
+  const count = records.length;
+  setText("record-count-meta", integerFormatter.format(count));
+  setText("period-meta", formatRecordPeriod(records));
+
+  if (keepExistingUpdatedAt) {
+    return;
+  }
+
+  const defaults = window.DATASET_DEFAULTS || {};
+  if (defaults.updated_at) {
+    setText("updated-at", defaults.updated_at);
+  } else {
+    setText("updated-at", formatDateTime(new Date()));
+  }
+}
+
 function setText(id, value) {
   const element = document.getElementById(id);
+  if (!element) {
+    return;
+  }
   element.textContent = value;
 }
 
@@ -801,6 +846,21 @@ function parseDate(value) {
   }
   const date = new Date(`${value}T00:00:00`);
   return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function formatRecordPeriod(records) {
+  if (!records.length) {
+    return "sem registos";
+  }
+  const dates = records
+    .map((record) => record.order_date)
+    .filter(Boolean)
+    .sort((a, b) => a.localeCompare(b));
+
+  if (!dates.length) {
+    return "período indisponível";
+  }
+  return `${dates[0]} a ${dates[dates.length - 1]}`;
 }
 
 function uniqueSorted(values) {

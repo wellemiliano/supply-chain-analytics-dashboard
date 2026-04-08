@@ -21,7 +21,9 @@
       </div>
       <div class="hero-meta">
         <div><span>Fonte de dados</span><strong>{{ data_source }}</strong></div>
-        <div><span>Última atualização</span><strong id="updated-at">-</strong></div>
+        <div><span>Última atualização</span><strong id="updated-at">{{ metadata_updated_at }}</strong></div>
+        <div><span>Registos</span><strong id="record-count-meta">{{ record_count }}</strong></div>
+        <div><span>Período analisado</span><strong id="period-meta">{{ period_start }} a {{ period_end }}</strong></div>
       </div>
     </header>
 
@@ -60,7 +62,7 @@
         <div class="filter-actions">
           <button type="submit" class="btn btn-primary">Aplicar filtros</button>
           <button type="button" id="reset-filters" class="btn btn-light">Limpar</button>
-          <span id="status-line" class="status-line">A carregar dados...</span>
+          <span id="status-line" class="status-line">{{ record_count }} registos no dataset ({{ period_start }} a {{ period_end }}).</span>
         </div>
       </form>
     </section>
@@ -192,6 +194,12 @@
 
   <script>
     window.FILTER_OPTIONS = {{ filter_options | tojson }};
+    window.DATASET_DEFAULTS = {
+      updated_at: "{{ metadata_updated_at }}",
+      record_count: {{ record_count }},
+      period_start: "{{ period_start }}",
+      period_end: "{{ period_end }}",
+    };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>

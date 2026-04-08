@@ -172,6 +172,8 @@ def apply_filters(df: pd.DataFrame, filters: dict[str, Any]) -> pd.DataFrame:
 def _empty_payload() -> dict[str, Any]:
     return {
         "record_count": 0,
+        "period_start": "",
+        "period_end": "",
         "kpis": {
             "total_inventory": 0.0,
             "avg_lead_time_days": 0.0,
@@ -210,6 +212,8 @@ def compute_dashboard_payload(df: pd.DataFrame) -> dict[str, Any]:
         return _empty_payload()
 
     total_orders = len(df)
+    period_start = df["order_date"].min().strftime("%Y-%m-%d")
+    period_end = df["order_date"].max().strftime("%Y-%m-%d")
     kpis = {
         "total_inventory": _safe_float(df["final_stock"].sum()),
         "avg_lead_time_days": _safe_float(df["lead_time_actual_days"].mean()),
@@ -417,6 +421,8 @@ def compute_dashboard_payload(df: pd.DataFrame) -> dict[str, Any]:
 
     return {
         "record_count": int(total_orders),
+        "period_start": period_start,
+        "period_end": period_end,
         "kpis": kpis,
         "charts": charts,
         "insights": insights,

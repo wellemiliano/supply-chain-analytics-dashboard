@@ -13,6 +13,7 @@ const decimalFormatter = new Intl.NumberFormat("pt-PT", {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+  applyDefaultVisualMetadata();
   initializeFilters(window.FILTER_OPTIONS || {});
 
   const filtersForm = document.getElementById("filters-form");
@@ -97,8 +98,12 @@ async function loadDashboard() {
     renderRegionPerformance(payload.charts.region_performance || []);
     renderOrdersTable(payload.table_rows || []);
 
-    setText("updated-at", payload.updated_at || "-");
-    setStatus(`Mostrando ${integerFormatter.format(payload.record_count || 0)} registos.`, false);
+    updateVisualMetadataFromPayload(payload);
+    const periodText = formatPeriodFromPayload(payload);
+    setStatus(
+      `Mostrando ${integerFormatter.format(payload.record_count || 0)} registos (${periodText}).`,
+      false
+    );
   } catch (error) {
     setStatus(error.message, false);
   }
@@ -409,6 +414,9 @@ function escapeHtml(value) {
 
 function setText(id, value) {
   const node = document.getElementById(id);
+  if (!node) {
+    return;
+  }
   node.textContent = value;
 }
 
@@ -416,4 +424,40 @@ function setStatus(message, loading) {
   const status = document.getElementById("status-line");
   status.textContent = message;
   status.style.color = loading ? "#2563eb" : "#4f6d89";
+}
+
+function applyDefaultVisualMetadata() {
+  const defaults = window.DATASET_DEFAULTS || {};
+  if (defaults.updated_at) {
+    setText("updated-at", defaults.updated_at);
+  }
+  if (Number.isFinite(defaults.record_count)) {
+    setText("record-count-meta", integerFormatter.format(defaults.record_count));
+  }
+  if (defaults.period_start && defaults.period_end) {
+    setText("period-meta", `${defaults.period_start} a ${defaults.period_end}`);
+  }
+}
+
+function updateVisualMetadataFromPayload(payload) {
+  setText("updated-at", payload.updated_at || "-");
+  if (Number.isFinite(payload.record_count)) {
+    setText("record-count-meta", integerFormatter.format(payload.record_count));
+  }
+  setText("period-meta", formatPeriodFromPayload(payload));
+}
+
+function formatPeriodFromPayload(payload) {
+  const start = payload.period_start;
+  const end = payload.period_end;
+  if (start && end) {
+    return `${start} a ${end}`;
+  }
+  if (start) {
+    return start;
+  }
+  if (end) {
+    return end;
+  }
+  return "sem registos";
 }

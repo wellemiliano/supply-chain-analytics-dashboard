@@ -21,7 +21,9 @@
       </div>
       <div class="hero-meta">
         <div><span>Fonte de dados</span><strong id="data-source">./data/records.json</strong></div>
-        <div><span>Última atualização</span><strong id="updated-at">-</strong></div>
+        <div><span>Última atualização</span><strong id="updated-at">2026-04-07 18:54:15</strong></div>
+        <div><span>Registos</span><strong id="record-count-meta">1200</strong></div>
+        <div><span>Período analisado</span><strong id="period-meta">2025-01-01 a 2025-06-29</strong></div>
       </div>
     </header>
 
@@ -60,7 +62,7 @@
         <div class="filter-actions">
           <button type="submit" class="btn btn-primary">Aplicar filtros</button>
           <button type="button" id="reset-filters" class="btn btn-light">Limpar</button>
-          <span id="status-line" class="status-line">A carregar dados...</span>
+          <span id="status-line" class="status-line">1200 registos no dataset (2025-01-01 a 2025-06-29).</span>
         </div>
       </form>
     </section>
@@ -192,6 +194,12 @@
 
   <script>
     window.DASHBOARD_DATA_URL = "./data/records.json";
+    window.DATASET_DEFAULTS = {
+      updated_at: "2026-04-07 18:54:15",
+      record_count: 1200,
+      period_start: "2025-01-01",
+      period_end: "2025-06-29",
+    };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script src="./static/js/dashboard-static.js"></script>

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime
 from pathlib import Path
 
 from flask import Flask, jsonify, render_template, request
@@ -30,15 +31,22 @@ def resolve_data_path() -> Path:
 
 DATA_PATH = resolve_data_path()
 DATAFRAME = load_and_prepare_data(DATA_PATH)
+BOOT_TIMESTAMP = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 app = Flask(__name__)
 
 
 @app.get("/")
 def index():
+    period_start = DATAFRAME["order_date"].min().strftime("%Y-%m-%d")
+    period_end = DATAFRAME["order_date"].max().strftime("%Y-%m-%d")
     return render_template(
         "index.html",
         filter_options=get_filter_options(DATAFRAME),
         data_source=DATA_PATH.name,
+        record_count=int(len(DATAFRAME)),
+        period_start=period_start,
+        period_end=period_end,
+        metadata_updated_at=BOOT_TIMESTAMP,
     )
 
 
