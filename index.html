@@ -104,34 +104,42 @@
 
     <section class="charts-grid">
       <article class="card chart-card">
+        <p class="block-kicker kicker-logistics">Eficiência Logística</p>
         <h2>Evolução Mensal do Lead Time</h2>
         <canvas id="chart-monthly-lead-time"></canvas>
       </article>
       <article class="card chart-card">
+        <p class="block-kicker kicker-risk">Risco de Ruptura</p>
         <h2>Ruptura por Categoria</h2>
         <canvas id="chart-stockout-category"></canvas>
       </article>
       <article class="card chart-card">
-        <h2>Top 10 Produtos com Ruptura</h2>
+        <p class="block-kicker kicker-risk">Risco de Ruptura</p>
+        <h2>Top 10 Produtos Críticos</h2>
         <canvas id="chart-top-products-stockout"></canvas>
       </article>
       <article class="card chart-card">
+        <p class="block-kicker kicker-logistics">Eficiência Logística</p>
         <h2>Entregas no Prazo vs Atrasadas</h2>
         <canvas id="chart-on-time-split"></canvas>
       </article>
       <article class="card chart-card">
-        <h2>Fornecedores com Maior Atraso</h2>
+        <p class="block-kicker kicker-supplier">Performance de Fornecedores</p>
+        <h2>Atraso Médio por Fornecedor</h2>
         <canvas id="chart-supplier-delay"></canvas>
       </article>
       <article class="card chart-card">
+        <p class="block-kicker kicker-demand">Precisão da Procura</p>
         <h2>Previsão vs Procura Real</h2>
         <canvas id="chart-forecast-vs-actual"></canvas>
       </article>
       <article class="card chart-card">
+        <p class="block-kicker kicker-logistics">Eficiência Logística</p>
         <h2>Desperdício Médio por Categoria</h2>
         <canvas id="chart-waste-category"></canvas>
       </article>
       <article class="card chart-card">
+        <p class="block-kicker kicker-supplier">Performance de Fornecedores</p>
         <h2>Custo Total por Fornecedor</h2>
         <canvas id="chart-cost-supplier"></canvas>
       </article>
@@ -139,10 +147,12 @@
 
     <section class="insight-grid">
       <article class="card">
+        <p class="block-kicker kicker-insight">Leitura Executiva</p>
         <h2>Insights Automáticos</h2>
         <ul id="insights-list" class="insights-list"></ul>
       </article>
       <article class="card">
+        <p class="block-kicker kicker-logistics">Eficiência Logística</p>
         <h2>Performance por Região</h2>
         <div class="table-wrapper">
           <table id="region-performance-table">
@@ -163,6 +173,7 @@
     </section>
 
     <section class="card">
+      <p class="block-kicker kicker-ops">Visão Operacional</p>
       <h2>Tabela Analítica (últimos registos)</h2>
       <div class="table-wrapper">
         <table id="orders-table">

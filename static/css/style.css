@@ -92,6 +92,39 @@ h3 {
   margin-bottom: 8px;
 }
 
+.block-kicker {
+  margin: 0 0 6px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.kicker-risk {
+  color: #b91c1c;
+}
+
+.kicker-logistics {
+  color: #0f766e;
+}
+
+.kicker-demand {
+  color: #1d4ed8;
+}
+
+.kicker-supplier {
+  color: #7c2d12;
+}
+
+.kicker-insight {
+  color: #475569;
+}
+
+.kicker-ops {
+  color: #334155;
+}
+
 p {
   margin: 0;
 }
