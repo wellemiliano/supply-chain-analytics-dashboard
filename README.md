@@ -1,123 +1,99 @@
 # Supply Chain Analytics Dashboard
 
-Dashboard web interativo para monitorização de KPIs da cadeia de abastecimento (inventário, rupturas, lead time, desperdício, previsões e performance logística), construído com Python + Flask + pandas + HTML/CSS/JavaScript + Chart.js.
+Interactive dashboard for supply chain KPIs (inventory, stockout, lead time, waste, demand forecast, and logistics performance).
 
-## Objetivo
+This repository now includes a static-first version ready for GitHub Pages, plus the original Flask backend files.
 
-Responder perguntas de negócio como:
-- Quais produtos têm maior risco de ruptura?
-- Quais regiões têm pior lead time?
-- Quais fornecedores entregam com mais atraso?
-- Onde está o maior desperdício?
-- A previsão de procura está perto da procura real?
-- Qual é a taxa de entregas no prazo?
+## Live Links
 
-## Stack
+- Static dashboard (GitHub Pages target): `https://wellemiliano.github.io/supply-chain-analytics-dashboard/`
+- Python backend version (Render): `https://supply-chain-analytics-dashboard-mifq.onrender.com`
 
-- Backend: Flask
-- Tratamento de dados: pandas
-- Frontend: HTML, CSS, JavaScript
-- Gráficos: Chart.js
-- Fonte de dados: XML fictício (`dados/dados_ficticios_supply_chain.xml`)
+## What This Dashboard Answers
 
-## KPIs monitorizados
+- Which products have the highest stockout risk?
+- Which regions have the worst lead time?
+- Which suppliers are delivering late most often?
+- Where is waste highest?
+- How close is forecast demand vs actual demand?
+- What is the on-time delivery rate?
+- How are KPIs evolving month by month?
 
-- Inventário Total
-- Lead Time Médio
-- Taxa de Ruptura
-- Entregas no Prazo
-- Desperdício Médio
-- Precisão da Previsão
-- Cobertura de Stock
-- Custo Total
+## Tech Stack
 
-## Métricas derivadas
+Static version (recommended for portfolio uptime):
+- HTML + CSS + JavaScript
+- Chart.js
+- Data source: `data/records.json` (generated from XML)
 
-- `stockout_rate` = pedidos com stockout / total de pedidos
-- `on_time_rate` = pedidos no prazo / total de pedidos
-- `forecast_accuracy` = `1 - abs(demand_actual - demand_forecast) / demand_forecast`
-- `lead_time_delay_days` = `max(lead_time_actual_days - lead_time_expected_days, 0)`
-- `stock_coverage_ratio` = `final_stock / demand_actual`
+Backend version (kept in repo):
+- Flask + pandas
 
-## Estrutura do projeto
+## Project Structure
 
 ```text
-supply-chain-dashboard/
-├── app.py
-├── requirements.txt
-├── dados/
-│   └── dados_ficticios_supply_chain.xml
-├── static/
-│   ├── css/
-│   │   └── style.css
-│   └── js/
-│       └── dashboard.js
-├── templates/
-│   └── index.html
-├── utils/
-│   ├── __init__.py
-│   └── process_data.py
-└── README.md
+supply-chain-analytics-dashboard/
+|-- index.html
+|-- data/
+|   `-- records.json
+|-- static/
+|   |-- css/
+|   |   `-- style.css
+|   `-- js/
+|       |-- dashboard.js
+|       `-- dashboard-static.js
+|-- scripts/
+|   `-- export_records_json.py
+|-- dados/
+|   `-- dados_ficticios_supply_chain.xml
+|-- app.py
+|-- requirements.txt
+`-- README.md
 ```
 
-## Como executar localmente
+## Regenerate Static Data
 
-### 1) Criar ambiente virtual
+If you update the XML source, regenerate `data/records.json`:
 
 ```bash
-python -m venv .venv
+python scripts/export_records_json.py
 ```
 
-### 2) Ativar ambiente virtual
+## Run Locally (Static)
 
-PowerShell:
+From repository root:
 
 ```bash
-.venv\Scripts\Activate.ps1
+python -m http.server 8000
 ```
 
-### 3) Instalar dependências
+Open:
 
-```bash
-pip install -r requirements.txt
-```
+`http://127.0.0.1:8000`
 
-### 4) Executar a aplicação
+## Publish on GitHub Pages (Free)
 
-```bash
-python app.py
-```
+1. Push code to `main`.
+2. In GitHub repo: `Settings` -> `Pages`.
+3. Source: `Deploy from a branch`.
+4. Branch: `main` and folder: `/ (root)`.
+5. Save.
 
-Aceder em: `http://127.0.0.1:5000`
+GitHub provides the final public URL in a few minutes.
 
-## API
+## KPI Set
 
-- `GET /api/health`: status da app e contagem de registos.
-- `GET /api/dashboard`: dados do dashboard com filtros opcionais:
-  - `start_date`
-  - `end_date`
-  - `region`
-  - `warehouse`
-  - `supplier`
-  - `category`
-  - `product`
+- Total Inventory
+- Average Lead Time
+- Stockout Rate
+- On-time Delivery Rate
+- Average Waste
+- Forecast Accuracy
+- Stock Coverage
+- Total Cost
 
-## Deploy no Render
+## Notes
 
-1. Subir o projeto para um repositório no GitHub.
-2. No Render, criar um novo **Web Service** ligado ao repositório.
-3. Configurar:
-   - Build Command: `pip install -r requirements.txt`
-   - Start Command: `gunicorn app:app`
-4. Garantir que a pasta `dados/` e o XML estão versionados no repositório.
-5. Fazer deploy e validar:
-   - `/api/health`
-   - carregamento dos filtros
-   - gráficos e tabela com dados
-
-## Próximos incrementos
-
-- Exportação CSV/PDF de visões filtradas.
-- Autenticação básica por utilizador.
-- Testes automatizados (unit + integração de API).
-- Alertas automáticos (ex: stockout rate acima de limiar).
+- Static hosting removes free-tier backend sleep risk.
+- For very large datasets, browser-side processing may become slower.
+- Flask files are still available if you want to run the backend mode later.
