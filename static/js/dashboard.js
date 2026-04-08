@@ -341,12 +341,12 @@ function renderRegionPerformance(rows) {
   rows.forEach((row) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td data-label="Regiao">${escapeHtml(row.region)}</td>
-      <td data-label="Lead Time Medio">${decimalFormatter.format(row.avg_lead_time_days)} dias</td>
-      <td data-label="Atraso Medio">${decimalFormatter.format(row.avg_delay_days)} dias</td>
+      <td data-label="Região">${escapeHtml(row.region)}</td>
+      <td data-label="Lead Time Médio">${decimalFormatter.format(row.avg_lead_time_days)} dias</td>
+      <td data-label="Atraso Médio">${decimalFormatter.format(row.avg_delay_days)} dias</td>
       <td data-label="Entregas no Prazo" style="background:${heatColor(row.on_time_rate, true)}">${decimalFormatter.format(row.on_time_rate)}%</td>
       <td data-label="Taxa de Ruptura" style="background:${heatColor(row.stockout_rate, false)}">${decimalFormatter.format(row.stockout_rate)}%</td>
-      <td data-label="Desperdicio Medio">${decimalFormatter.format(row.avg_waste_percent)}%</td>
+      <td data-label="Desperdício Médio">${decimalFormatter.format(row.avg_waste_percent)}%</td>
     `;
     tbody.appendChild(tr);
   });
@@ -363,7 +363,7 @@ function renderOrdersTable(rows) {
     tr.innerHTML = `
       <td data-label="Pedido">${escapeHtml(row.order_id)}</td>
       <td data-label="Data">${escapeHtml(row.order_date)}</td>
-      <td data-label="Regiao">${escapeHtml(row.region)}</td>
+      <td data-label="Região">${escapeHtml(row.region)}</td>
       <td data-label="Fornecedor">${escapeHtml(row.supplier)}</td>
       <td data-label="Categoria">${escapeHtml(row.category)}</td>
       <td data-label="Produto">${escapeHtml(row.product)}</td>
@@ -374,7 +374,7 @@ function renderOrdersTable(rows) {
       <td data-label="Lead Time">${decimalFormatter.format(row.lead_time_actual_days || 0)} dias</td>
       <td data-label="Atraso">${decimalFormatter.format(row.lead_time_delay_days || 0)} dias</td>
       <td data-label="Ruptura"><span class="table-cell-badge ${stockoutClass}">${escapeHtml(row.stockout)}</span></td>
-      <td data-label="Desperdicio">${decimalFormatter.format(row.waste_percent || 0)}%</td>
+      <td data-label="Desperdício">${decimalFormatter.format(row.waste_percent || 0)}%</td>
       <td data-label="No Prazo"><span class="table-cell-badge ${onTimeClass}">${escapeHtml(row.on_time_delivery)}</span></td>
       <td data-label="Custo Total">${currencyFormatter.format(row.total_cost_eur || 0)}</td>
     `;

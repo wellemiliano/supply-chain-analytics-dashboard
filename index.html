@@ -17,11 +17,11 @@
     <header class="hero card">
       <div>
         <h1>Supply Chain Analytics Dashboard</h1>
-        <p>Monitorizacao de inventario, rupturas, lead time, desperdicio e performance logistica.</p>
+        <p>Monitorização de inventário, rupturas, lead time, desperdício e performance logística.</p>
       </div>
       <div class="hero-meta">
         <div><span>Fonte de dados</span><strong id="data-source">./data/records.json</strong></div>
-        <div><span>Ultima atualizacao</span><strong id="updated-at">-</strong></div>
+        <div><span>Última atualização</span><strong id="updated-at">-</strong></div>
       </div>
     </header>
 
@@ -37,11 +37,11 @@
             <input type="date" id="end_date" name="end_date">
           </label>
           <label>
-            Regiao
+            Região
             <select id="region" name="region"></select>
           </label>
           <label>
-            Armazem
+            Armazém
             <select id="warehouse" name="warehouse"></select>
           </label>
           <label>
@@ -67,11 +67,11 @@
 
     <section class="kpi-grid">
       <article class="kpi-card card">
-        <h3>Inventario Total</h3>
+        <h3>Inventário Total</h3>
         <p id="kpi-total_inventory">-</p>
       </article>
       <article class="kpi-card card">
-        <h3>Lead Time Medio</h3>
+        <h3>Lead Time Médio</h3>
         <p id="kpi-avg_lead_time_days">-</p>
       </article>
       <article class="kpi-card card">
@@ -83,11 +83,11 @@
         <p id="kpi-on_time_rate">-</p>
       </article>
       <article class="kpi-card card">
-        <h3>Desperdicio Medio</h3>
+        <h3>Desperdício Médio</h3>
         <p id="kpi-avg_waste_percent">-</p>
       </article>
       <article class="kpi-card card">
-        <h3>Precisao da Previsao</h3>
+        <h3>Precisão da Previsão</h3>
         <p id="kpi-forecast_accuracy_rate">-</p>
       </article>
       <article class="kpi-card card">
@@ -102,7 +102,7 @@
 
     <section class="charts-grid">
       <article class="card chart-card">
-        <h2>Evolucao Mensal do Lead Time</h2>
+        <h2>Evolução Mensal do Lead Time</h2>
         <canvas id="chart-monthly-lead-time"></canvas>
       </article>
       <article class="card chart-card">
@@ -122,11 +122,11 @@
         <canvas id="chart-supplier-delay"></canvas>
       </article>
       <article class="card chart-card">
-        <h2>Previsao vs Procura Real</h2>
+        <h2>Previsão vs Procura Real</h2>
         <canvas id="chart-forecast-vs-actual"></canvas>
       </article>
       <article class="card chart-card">
-        <h2>Desperdicio Medio por Categoria</h2>
+        <h2>Desperdício Médio por Categoria</h2>
         <canvas id="chart-waste-category"></canvas>
       </article>
       <article class="card chart-card">
@@ -137,21 +137,21 @@
 
     <section class="insight-grid">
       <article class="card">
-        <h2>Insights Automaticos</h2>
+        <h2>Insights Automáticos</h2>
         <ul id="insights-list" class="insights-list"></ul>
       </article>
       <article class="card">
-        <h2>Performance por Regiao</h2>
+        <h2>Performance por Região</h2>
         <div class="table-wrapper">
           <table id="region-performance-table">
             <thead>
               <tr>
-                <th>Regiao</th>
-                <th>Lead Time Medio</th>
-                <th>Atraso Medio</th>
+                <th>Região</th>
+                <th>Lead Time Médio</th>
+                <th>Atraso Médio</th>
                 <th>Entregas no Prazo</th>
                 <th>Taxa de Ruptura</th>
-                <th>Desperdicio Medio</th>
+                <th>Desperdício Médio</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -161,14 +161,14 @@
     </section>
 
     <section class="card">
-      <h2>Tabela Analitica (ultimos registos)</h2>
+      <h2>Tabela Analítica (últimos registos)</h2>
       <div class="table-wrapper">
         <table id="orders-table">
           <thead>
             <tr>
               <th>Pedido</th>
               <th>Data</th>
-              <th>Regiao</th>
+              <th>Região</th>
               <th>Fornecedor</th>
               <th>Categoria</th>
               <th>Produto</th>
@@ -179,7 +179,7 @@
               <th>Lead Time</th>
               <th>Atraso</th>
               <th>Ruptura</th>
-              <th>Desperdicio</th>
+              <th>Desperdício</th>
               <th>No Prazo</th>
               <th>Custo Total</th>
             </tr>

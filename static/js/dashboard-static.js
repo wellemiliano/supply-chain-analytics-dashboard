@@ -215,7 +215,7 @@ function loadDashboard() {
     return;
   }
 
-  setStatus("A processar KPIs e graficos...", true);
+  setStatus("A processar KPIs e gráficos...", true);
   const filters = readFilters();
   const filtered = applyFilters(allRecords, filters);
   const payload = computeDashboardPayload(filtered);
@@ -322,7 +322,7 @@ function computeDashboardPayload(records) {
   }
   if (supplierDelay.length) {
     insights.push(
-      `O fornecedor ${supplierDelay[0].key} tem o maior atraso medio (${round(
+      `O fornecedor ${supplierDelay[0].key} tem o maior atraso médio (${round(
         supplierDelay[0].avg_delay_days
       )} dias).`
     );
@@ -332,19 +332,19 @@ function computeDashboardPayload(records) {
       (a, b) => a.on_time_rate - b.on_time_rate
     )[0];
     insights.push(
-      `A regiao ${worstRegion.key} possui a menor taxa de entregas no prazo (${round(
+      `A região ${worstRegion.key} possui a menor taxa de entregas no prazo (${round(
         worstRegion.on_time_rate * 100
       )}%).`
     );
   }
   if (topProductsStockout.length) {
     insights.push(
-      `O produto ${topProductsStockout[0].key} lidera em rupturas recorrentes (${topProductsStockout[0].stockout_count} ocorrencias).`
+      `O produto ${topProductsStockout[0].key} lidera em rupturas recorrentes (${topProductsStockout[0].stockout_count} ocorrências).`
     );
   }
   if (forecastAccuracyByCategory.length) {
     insights.push(
-      `A categoria ${forecastAccuracyByCategory[0].key} tem a menor precisao media de previsao (${round(
+      `A categoria ${forecastAccuracyByCategory[0].key} tem a menor precisão média de previsão (${round(
         forecastAccuracyByCategory[0].forecast_accuracy * 100
       )}%).`
     );
@@ -355,7 +355,7 @@ function computeDashboardPayload(records) {
     const trend =
       lastRow.avg_lead_time_days > firstRow.avg_lead_time_days ? "subiu" : "caiu";
     insights.push(
-      `O lead time medio ${trend} de ${round(firstRow.avg_lead_time_days)} para ${round(
+      `O lead time médio ${trend} de ${round(firstRow.avg_lead_time_days)} para ${round(
         lastRow.avg_lead_time_days
       )} dias entre ${firstRow.key} e ${lastRow.key}.`
     );
@@ -520,7 +520,7 @@ function renderCharts(charts) {
       labels: charts.monthly_performance.labels,
       datasets: [
         {
-          label: "Lead Time Medio (dias)",
+          label: "Lead Time Médio (dias)",
           data: charts.monthly_performance.avg_lead_time_days,
           yAxisID: "y",
           borderColor: palette.orange,
@@ -625,7 +625,7 @@ function renderCharts(charts) {
       labels: charts.supplier_delay.labels,
       datasets: [
         {
-          label: "Atraso Medio (dias)",
+          label: "Atraso Médio (dias)",
           data: charts.supplier_delay.values,
           backgroundColor: "rgba(2, 132, 199, 0.7)",
           borderColor: palette.sky,
@@ -646,7 +646,7 @@ function renderCharts(charts) {
       labels: charts.forecast_vs_actual.labels,
       datasets: [
         {
-          label: "Previsao",
+          label: "Previsão",
           data: charts.forecast_vs_actual.forecast,
           backgroundColor: "rgba(37, 99, 235, 0.7)",
           borderColor: palette.blue,
@@ -674,7 +674,7 @@ function renderCharts(charts) {
       labels: charts.waste_by_category.labels,
       datasets: [
         {
-          label: "Desperdicio Medio (%)",
+          label: "Desperdício Médio (%)",
           data: charts.waste_by_category.values,
           backgroundColor: "rgba(15, 118, 110, 0.65)",
           borderColor: palette.teal,
@@ -728,12 +728,12 @@ function renderRegionPerformance(rows) {
   rows.forEach((row) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td data-label="Regiao">${escapeHtml(row.region)}</td>
-      <td data-label="Lead Time Medio">${decimalFormatter.format(row.avg_lead_time_days)} dias</td>
-      <td data-label="Atraso Medio">${decimalFormatter.format(row.avg_delay_days)} dias</td>
+      <td data-label="Região">${escapeHtml(row.region)}</td>
+      <td data-label="Lead Time Médio">${decimalFormatter.format(row.avg_lead_time_days)} dias</td>
+      <td data-label="Atraso Médio">${decimalFormatter.format(row.avg_delay_days)} dias</td>
       <td data-label="Entregas no Prazo" style="background:${heatColor(row.on_time_rate, true)}">${decimalFormatter.format(row.on_time_rate)}%</td>
       <td data-label="Taxa de Ruptura" style="background:${heatColor(row.stockout_rate, false)}">${decimalFormatter.format(row.stockout_rate)}%</td>
-      <td data-label="Desperdicio Medio">${decimalFormatter.format(row.avg_waste_percent)}%</td>
+      <td data-label="Desperdício Médio">${decimalFormatter.format(row.avg_waste_percent)}%</td>
     `;
     tbody.appendChild(tr);
   });
@@ -750,7 +750,7 @@ function renderOrdersTable(rows) {
     tr.innerHTML = `
       <td data-label="Pedido">${escapeHtml(row.order_id)}</td>
       <td data-label="Data">${escapeHtml(row.order_date)}</td>
-      <td data-label="Regiao">${escapeHtml(row.region)}</td>
+      <td data-label="Região">${escapeHtml(row.region)}</td>
       <td data-label="Fornecedor">${escapeHtml(row.supplier)}</td>
       <td data-label="Categoria">${escapeHtml(row.category)}</td>
       <td data-label="Produto">${escapeHtml(row.product)}</td>
@@ -761,7 +761,7 @@ function renderOrdersTable(rows) {
       <td data-label="Lead Time">${decimalFormatter.format(row.lead_time_actual_days || 0)} dias</td>
       <td data-label="Atraso">${decimalFormatter.format(row.lead_time_delay_days || 0)} dias</td>
       <td data-label="Ruptura"><span class="table-cell-badge ${stockoutClass}">${escapeHtml(row.stockout)}</span></td>
-      <td data-label="Desperdicio">${decimalFormatter.format(row.waste_percent || 0)}%</td>
+      <td data-label="Desperdício">${decimalFormatter.format(row.waste_percent || 0)}%</td>
       <td data-label="No Prazo"><span class="table-cell-badge ${onTimeClass}">${escapeHtml(row.on_time_delivery)}</span></td>
       <td data-label="Custo Total">${currencyFormatter.format(row.total_cost_eur || 0)}</td>
     `;
