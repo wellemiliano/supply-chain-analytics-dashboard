@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: supply-chain-analytics-dashboard
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    healthCheckPath: /api/health
+    autoDeploy: true
